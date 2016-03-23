@@ -29,11 +29,10 @@ public class CaesarCipher {
     if(!Character.isAlphabetic(c)) {
       return c;
     }
-    if(Character.isUpperCase(c)) {
-      return (char)(((int)c - 'A' + key) % 26 + 'A');
-    }
     else {
-      return (char)(((int)c - 'a' + key) % 26 + 'a');
+      char alpBeg = Character.isUpperCase(c) ? 'A' : 'a';
+      
+      return (char)(((int)c - alpBeg + key) % 26 + alpBeg);
     }
   }
 
@@ -51,12 +50,10 @@ public class CaesarCipher {
     if(!Character.isAlphabetic(c)) {
       return c;
     }
-    if(Character.isUpperCase(c)) {
-        return (char)(((int)c - 'A' + 26 - key) % 26 + 'A');
-      }
-      else {
-        return (char)(((int)c - 'a' + 26 - key) % 26 + 'a');
-      }
+    else {
+      char alpBeg = Character.isUpperCase(c) ? 'A' : 'a';
+      return (char)(((int)c - alpBeg + 26 + key) % 26 + alpBeg);
+    }
   }
 
   public int getKey() {
