@@ -1,8 +1,6 @@
 package ch.heigvd.res.caesar.cipher;
 
-import java.io.IOException;
 import java.util.Random;
-import java.lang.Math;
 
 public class CaesarCipher {
 
@@ -54,11 +52,11 @@ public class CaesarCipher {
       return c;
     }
     if(Character.isUpperCase(c)) {
-      return (char)(('Z' - (int)c + key) % 26 + 'A');
-    }
-    else {
-      return (char)(('z' - (int)c + key) % 26 + 'a');
-    }
+        return (char)(((int)c - 'A' + 26 - key) % 26 + 'A');
+      }
+      else {
+        return (char)(((int)c - 'a' + 26 - key) % 26 + 'a');
+      }
   }
 
   public int getKey() {
