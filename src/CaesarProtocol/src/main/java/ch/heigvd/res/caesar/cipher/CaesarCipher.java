@@ -47,13 +47,11 @@ public class CaesarCipher {
   }
 
   public char decrypt(char c) {
-    if(!Character.isAlphabetic(c)) {
-      return c;
-    }
-    else {
+    if(Character.isLetter(c)){
       char alpBeg = Character.isUpperCase(c) ? 'A' : 'a';
-      return (char)(((int)c - alpBeg + 26 + key) % 26 + alpBeg);
+      return (char)(((int)c - (int)alpBeg + 26 - key) % 26 + alpBeg);
     }
+    return c;
   }
 
   public int getKey() {
