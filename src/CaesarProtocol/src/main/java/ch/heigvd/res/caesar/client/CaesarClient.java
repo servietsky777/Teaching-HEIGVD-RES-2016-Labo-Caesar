@@ -1,10 +1,8 @@
 package ch.heigvd.res.caesar.client;
 
+import ch.heigvd.res.caesar.cipher.CaesarCipher;
 import ch.heigvd.res.caesar.protocol.Protocol;
 import java.util.logging.Logger;
-
-import com.sun.glass.ui.Application;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -49,16 +47,19 @@ public class CaesarClient {
 			String notification;
 			try {
 				// Set caesar cipher key
-				String keyString = in.readLine();
-				key = Integer.valueOf(keyString);
+				CaesarCipher cipher = new CaesarCipher(Integer.valueOf(in.readLine()));
+				// Write confirm message
 				out.println(Protocol.CMD_CONFIRM_KEY);
 				out.flush();
-				// Discussion
+				// Discussion started
 				while (connected) {
 					String input = scanner.next();
-					out.println(input);
+					out.println(cipher.encryptMessage(input));
 					out.flush();
-					String response = in.readLine();
+					if (input.equalsIgnoreCase("EXIT")) {
+						break;
+					}
+					String response = cipher.decryptMessage(in.readLine());
 					LOG.info("Server responded : " + response);
 				}
 			} catch (IOException e) {
@@ -102,7 +103,6 @@ public class CaesarClient {
 	}
 
 	private void cleanup() {
-
 		try {
 			if (in != null) {
 				in.close();

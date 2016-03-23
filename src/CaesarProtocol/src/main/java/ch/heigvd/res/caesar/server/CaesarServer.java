@@ -1,5 +1,6 @@
 package ch.heigvd.res.caesar.server;
 
+import ch.heigvd.res.caesar.cipher.CaesarCipher;
 import ch.heigvd.res.caesar.client.*;
 import ch.heigvd.res.caesar.protocol.Protocol;
 import java.util.logging.Logger;
@@ -13,7 +14,7 @@ import java.util.logging.Level;
 
 /**
  *
- * @author Olivier Liechti (olivier.liechti@heig-vd.ch)
+ * @author Antoine Drabble & Andrea Cotza
  */
 public class CaesarServer {
 	
@@ -84,15 +85,12 @@ public class CaesarServer {
 			Socket clientSocket;
 			BufferedReader in = null;
 			PrintWriter out = null;
-			int key;
 
 			public ServantWorker(Socket clientSocket) {
 				try {
 					this.clientSocket = clientSocket;
 					in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 					out = new PrintWriter(clientSocket.getOutputStream());
-					// Generate cypher key
-					key = 0;
 				} catch (IOException ex) {
 					Logger.getLogger(CaesarServer.class.getName()).log(Level.SEVERE, null, ex);
 				}
@@ -102,21 +100,22 @@ public class CaesarServer {
 			public void run() {
 				String line;
 				boolean shouldRun = true;
-
+				CaesarCipher cipher = new CaesarCipher();
 				
 				try {
 					LOG.info("Sending the key until the client confirms it...");
 					do{
-						out.println(key);
+						out.println(cipher.getKey());
 						out.flush();
 					}while((shouldRun) && !in.readLine().equalsIgnoreCase(Protocol.CMD_CONFIRM_KEY));
 					LOG.info("Reading until client sends EXIT or closes the connection...");
 					while ((shouldRun) && (line = in.readLine()) != null) {
+						line = cipher.decryptMessage(line);
 						if (line.equalsIgnoreCase("EXIT")) {
 							shouldRun = false;
 						}
 						LOG.info("Received a new message : " + line);
-						out.println(line);
+						out.println(cipher.encryptMessage(line));
 						out.flush();
 					}
 
