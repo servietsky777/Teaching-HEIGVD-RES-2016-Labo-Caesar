@@ -54,7 +54,7 @@ public class CaesarClient {
 				out.flush();
 				// Discussion started
 				while (connected) {
-					String input = scanner.next();
+					String input = scanner.nextLine();
 					out.println(cipher.encryptMessage(input));
 					out.flush();
 					if (input.equalsIgnoreCase("EXIT")) {
