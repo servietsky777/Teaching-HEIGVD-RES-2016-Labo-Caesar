@@ -1,5 +1,6 @@
 package ch.heigvd.res.caesar.cipher;
 
+import java.text.Normalizer;
 import java.util.Random;
 
 public class CaesarCipher {
@@ -18,15 +19,16 @@ public class CaesarCipher {
   public String encryptMessage(String message) {
     String result = "";
 
-    for(char c : message.toCharArray()) {
+    //Normalizer.Form.NFD used to avoid accented char to be recognized like letters
+    for(char c : Normalizer.normalize(message, Normalizer.Form.NFD).toCharArray()) {
       result += encrypt(c);
     }
 
     return result;
   }
 
-  public char encrypt(char c) {
-    if(!Character.isAlphabetic(c)) {
+  private char encrypt(char c) {
+    if(!Character.isLetter(c)) {
       return c;
     }
     else {
@@ -39,20 +41,21 @@ public class CaesarCipher {
   public String decryptMessage(String message) {
     String result = "";
 
-    for(char c : message.toCharArray()) {
+    //Normalizer.Form.NFD used to avoid accented char to be recognized like letters
+    for(char c : Normalizer.normalize(message, Normalizer.Form.NFD).toCharArray()) {
       result += decrypt(c);
     }
 
     return result;
   }
 
-  public char decrypt(char c) {
-    if(!Character.isAlphabetic(c)) {
+  private char decrypt(char c) {
+    if(!Character.isLetter(c)) {
       return c;
     }
     else {
       char alpBeg = Character.isUpperCase(c) ? 'A' : 'a';
-      return (char)(((int)c - alpBeg + 26 + key) % 26 + alpBeg);
+      return (char)(((int)c - alpBeg + 26 - key) % 26 + alpBeg);
     }
   }
 
