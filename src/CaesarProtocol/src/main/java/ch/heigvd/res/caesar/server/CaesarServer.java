@@ -103,7 +103,7 @@ public class CaesarServer {
 				CaesarCipher cipher = new CaesarCipher();
 				
 				try {
-					LOG.info("Sending the key until the client confirms it...");
+					LOG.info("Sending the key (" + cipher.getKey() + ") until the client confirms it...");
 					do{
 						out.println(cipher.getKey());
 						out.flush();

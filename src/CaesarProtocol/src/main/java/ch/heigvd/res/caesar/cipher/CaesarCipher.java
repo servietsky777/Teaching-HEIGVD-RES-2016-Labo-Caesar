@@ -27,8 +27,7 @@ public class CaesarCipher {
   }
 
   public char encrypt(char c) {
-    return (char)(((int)c + key) % 26);
-
+    return (char)('a' + (((int)c + key) % 26));
   }
 
   public String decryptMessage(String message) {
@@ -42,7 +41,7 @@ public class CaesarCipher {
   }
 
   public char decrypt(char c) {
-    return (char)(((int)c - key) % 26);
+    return (char)('a' + (((int)c - key) % 26));
   }
 
   public int getKey() {

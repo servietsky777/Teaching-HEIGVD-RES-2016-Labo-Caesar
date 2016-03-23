@@ -48,6 +48,7 @@ public class CaesarClient {
 			try {
 				// Set caesar cipher key
 				CaesarCipher cipher = new CaesarCipher(Integer.valueOf(in.readLine()));
+				LOG.info("Received the key : " + cipher.getKey());
 				// Write confirm message
 				out.println(Protocol.CMD_CONFIRM_KEY);
 				out.flush();
